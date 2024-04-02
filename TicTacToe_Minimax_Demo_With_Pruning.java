@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class TicTacToe_Minimax_Demo
+public class TicTacToe_Minimax_Demo_With_Pruning
 {
 
     public static int num_recursions = 0;
@@ -204,7 +204,7 @@ public class TicTacToe_Minimax_Demo
                 if(board[r][c]=='.')
                 {
                     board[r][c] = 'O';
-                    int move_score = minimax(board,false,0);
+                    int move_score = minimax(board,false,0,-10000000,10000000);
                     board[r][c] = '.';
 
                     if(move_score > best)
@@ -221,7 +221,7 @@ public class TicTacToe_Minimax_Demo
     
 
     //returns the score for each board position based on the minimum or maximum score for the next possible moves
-    public static int minimax(char[][] board, boolean max, int depth)
+    public static int minimax(char[][] board, boolean max, int depth, int alpha, int beta)
     {
         num_recursions++;
         //end case
@@ -246,8 +246,15 @@ public class TicTacToe_Minimax_Demo
                     if(board[r][c]=='.')
                     {
                         board[r][c] = 'O';
-                        value = Math.max(value,minimax(board,false,depth+1));
+                        int eval = minimax(board,false,depth+1,alpha,beta);
+                        value = Math.max(value,eval);
                         board[r][c] = '.';
+
+                        alpha = Math.max(alpha,eval);
+                        if(beta <= alpha)
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -269,8 +276,15 @@ public class TicTacToe_Minimax_Demo
                     if(board[r][c]=='.')
                     {
                         board[r][c] = 'X';
-                        value = Math.min(value,minimax(board,true,depth+1));
+                        int eval = minimax(board,true,depth+1,alpha,beta);
+                        value = Math.min(value,eval);
                         board[r][c] = '.';
+
+                        beta = Math.min(beta, eval);
+                        if(beta <= alpha)
+                        {
+                            break;
+                        }
                     }
                 }
             }
