@@ -8,7 +8,7 @@ public class TicTacToe_Minimax_Demo
 
         init_board(board);
 
-        boolean x_turn = false;
+        boolean x_turn = true;
         
         while(!gameover(board))
         {
